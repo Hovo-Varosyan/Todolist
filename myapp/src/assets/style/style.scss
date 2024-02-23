@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner:wght@400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner:wght@400..700&family=Gilda+Display&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Playfair Display", serif;
+    font-style: normal;
+
+}
+
+th,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-style: normal;
+    font-family: "Gilda Display", serif !important;
+
+
+}
+
+table,
+tr,
+th,
+td {
+    border: 1px solid black !important;
+
+}
+
+table {
+    width: 100%;
+    text-align: center;
+
+}
+
+td {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+}
+
+a {
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+
+
+.red {
+    background: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(255, 169, 169) 25%, rgb(255, 0, 0) 50%, rgba(255, 169, 169) 75%, rgb(255, 255, 255) 100%);
+}
+
+.green {
+    background: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(138, 255, 120) 25%, rgb(33, 249, 0) 50%, rgb(138, 255, 120) 75%, rgb(255, 255, 255) 100%);
+}
+
+button {
+    cursor: pointer;
+}

@@ -1,0 +1,23 @@
+.main__alert {
+    position: absolute !important;
+    z-index: 20;
+    bottom: 10vh;
+    right: 20px;
+    animation: alertopacity 5s forwards;
+    max-width: 30%;
+
+    @keyframes alertopacity {
+        0% {
+            opacity: 1;
+
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+}
