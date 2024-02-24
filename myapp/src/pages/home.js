@@ -27,7 +27,7 @@ function Home() {
     <>
 
       <main>
-        <div className="user__container home__main">
+        <div className="home__main">
           <h1>Task List</h1>
           {loading && (
             <table border='1' className="Table">

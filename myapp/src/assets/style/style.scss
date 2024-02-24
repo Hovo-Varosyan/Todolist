@@ -23,24 +23,36 @@ h6 {
 
 }
 
+td,
+tr,
+th,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    white-space: normal !important;
+    word-wrap: break-word !important;
+}
+
 table,
 tr,
 th,
 td {
     border: 1px solid black !important;
+}
 
+td {
+    max-width: 500px !important;
 }
 
 table {
-    width: 100%;
+    max-width: 100%;
     text-align: center;
 
 }
 
-td {
-    white-space: normal !important;
-    word-wrap: break-word !important;
-}
 
 a {
     text-decoration: none;

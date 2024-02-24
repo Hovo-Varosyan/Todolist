@@ -28,6 +28,17 @@ class Task {
       const data = await userModel.findById({ _id: userId }).select('list -_id');
       if (data) {
         const list = data.list.length > 0 ? data.list : "empty";
+        if (list !== 'empty') {
+          list.forEach(element => {
+            if (element.title.length > 30) {
+              element.title = element.title.substring(0, 30) + '...'
+            }
+            if (element.description.length > 100) {
+              element.description = element.description.substring(0, 100) + '...';
+            }
+          });
+        }
+
         return res.json({ list });
       } else {
         return res.status(404).json({ err: "user not devined" });
