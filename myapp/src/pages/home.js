@@ -8,20 +8,25 @@ import { useNavigate } from "react-router";
 import DeleteBtn from "../component/DeleteBtn";
 import DoneBtn from "../component/DoneBtn";
 import TaskEdit from "../component/TaskEdit";
+import { useDispatch, useSelector } from 'react-redux';
+import { getState } from "../store/Todostore";
 
 
 
 function Home() {
   const [show, setShow] = useState(false);
-  const [loading, setLoading] = useState();
+  const todoList = useSelector(state => state.todo)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     axios
       .get("http://localhost:8080/")
-      .then((respons) => setLoading(respons.data.list))
+      .then((respons) => dispatch(getState(respons.data.list)))
       .catch((respons) => console.log(respons));
   }, []);
+
+  console.log(todoList)
 
   return (
     <>
@@ -29,7 +34,7 @@ function Home() {
       <main>
         <div className="home__main">
           <h1>Task List</h1>
-          {loading && (
+          {todoList.length !== 0 ? (
             <table border='1' className="Table">
               <thead>
                 <tr>
@@ -42,8 +47,8 @@ function Home() {
                 </tr>
               </thead>
               <tbody>
-                {loading !== "empty" ? (
-                  loading.map((e, i) => {
+                {todoList !== "empty" ? (
+                  todoList.map((e, i) => {
                     return (
                       <tr key={i}>
                         <td>
@@ -75,7 +80,7 @@ function Home() {
                 )}
               </tbody>
             </table>
-          )}
+          ) : 'Loading...'}
         </div>
       </main>
       {

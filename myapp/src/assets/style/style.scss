@@ -41,14 +41,14 @@ tr,
 th,
 td {
     border: 1px solid black !important;
-}
-
-td {
-    max-width: 500px !important;
+    button{
+        word-break: normal;
+    }
+    word-break: break-all;
 }
 
 table {
-    max-width: 100%;
+    min-width: 100%;
     text-align: center;
 
 }
