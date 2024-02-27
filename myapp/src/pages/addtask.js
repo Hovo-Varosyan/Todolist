@@ -2,21 +2,23 @@
 import { useState } from "react";
 import "../assets/style/add.scss";
 import axios from "axios";
+import AlertMessage from '../component/Alert';
 
 export default function AddTask() {
-  
+
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [status, setStatus] = useState(false);
+  const [message, setMessage] = useState([])
 
   function handleSubmit(e) {
     e.preventDefault();
     axios
       .post("http://localhost:8080/task/add", { title, description, status })
-      .then((respons) => alert("successful"))
-      .catch((respons) => {
+      .then((response) =>setMessage([response.data.message]) )
+      .catch((response) => {
         alert("error");
-        console.log(respons);
+        console.log(response);
       });
   }
 
@@ -71,6 +73,9 @@ export default function AddTask() {
           <input type="submit" value="Add" />
         </form>
       </section>
+      {
+        message.length > 0 ? <AlertMessage message={message} setMessage={setMessage} /> : null
+      }
     </main>
   );
 }

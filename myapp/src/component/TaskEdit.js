@@ -3,17 +3,21 @@ import { useEffect, useState } from "react";
 import "../assets/style/edit.scss";
 import CloseButton from 'react-bootstrap/CloseButton';
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { todoEdit } from "../store/Todostore";
 
-export default function TaskEdit({ id, setShow }) {
-
-    const [data, setData] = useState()
-
+export default function TaskEdit({ id, setShow, setMessage }) {
+    const dispatch = useDispatch()
+    const [data, setData] = useState(false)
     function handleEdit(e) {
         e.preventDefault()
         axios
             .patch("http://localhost:8080/", { ...data, id })
-            .then((respons) => alert('successful'))
-            .catch((respons) => console.log(respons));
+            .then((response) => {
+                dispatch(todoEdit({ ...response.data.data }))
+                setMessage([response.data.message])
+            })
+            .catch((response) => console.log(response));
     }
 
     useEffect(() => {

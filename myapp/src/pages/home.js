@@ -10,6 +10,7 @@ import DoneBtn from "../component/DoneBtn";
 import TaskEdit from "../component/TaskEdit";
 import { useDispatch, useSelector } from 'react-redux';
 import { getState } from "../store/Todostore";
+import AlertMessage from '../component/Alert';
 
 
 
@@ -18,6 +19,7 @@ function Home() {
   const todoList = useSelector(state => state.todo)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [message, setMessage] = useState([])
 
   useEffect(() => {
     axios
@@ -26,7 +28,6 @@ function Home() {
       .catch((respons) => console.log(respons));
   }, []);
 
-  console.log(todoList)
 
   return (
     <>
@@ -57,7 +58,7 @@ function Home() {
                         <td> {e.title}</td>
                         <td>{e.description}</td>
                         <td>
-                          <DoneBtn id={e._id} status={e.status} />
+                          <DoneBtn id={e._id} setMessage={setMessage} status={e.status} />
                         </td>
                         <td>
                           <Button variant="contained" onClick={() => navigate(`/task/${e._id}`)} color="primary">
@@ -65,7 +66,7 @@ function Home() {
                           </Button>
                         </td>
                         <td>
-                          <DeleteBtn id={e._id} />
+                          <DeleteBtn id={e._id} setMessage={setMessage} />
                         </td>
                         <td>
                           <Button variant="outlined" onClick={() => setShow(e._id)} ><EditIcon />Edit</Button>
@@ -84,11 +85,11 @@ function Home() {
         </div>
       </main>
       {
-        show && <TaskEdit id={show} setShow={setShow} />
+        show && <TaskEdit id={show} setMessage={setMessage} setShow={setShow} />
       }
-
-
-
+       {
+                message.length > 0 ? <AlertMessage message={message} setMessage={setMessage} /> : null
+      }
     </>
   );
 }
