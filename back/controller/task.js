@@ -1,11 +1,11 @@
 const userModel = require("../models/usermodel");
 class Task {
 
-    
+
 
   static add = async (req, res, next) => {
     try {
-
+      console.log(req.body)
       const updateTask = await userModel.findByIdAndUpdate(
         req.user.id,
         {
@@ -25,11 +25,13 @@ class Task {
   };
 
   static task = async (req, res, next) => {
-    const userId = req.user.id
     try {
-      const data = await userModel.findById({ _id: userId }).select('list -_id');
+      const userId = req.user.id
+      const page = req.params.page !=='undefined'?req.params.page:1
+      const data = await userModel.findById({ _id: userId }).select('list -_id')
       if (data) {
-        const list = data.list.length > 0 ? data.list : "empty";
+        const limit = data.list.slice(((page - 1) * 50), page * 50)
+        const list = limit.length > 0 ? limit : "empty";
         if (list !== 'empty') {
           list.forEach(element => {
             if (element.title.length > 30) {
@@ -41,9 +43,9 @@ class Task {
           });
         }
 
-        return res.json({ list });
+        return res.json({ list, length: data.list.length });
       } else {
-        return res.status(404).json({ err: "user not devined" });
+        return res.status(404).json({ err: "data not devined" });
       }
     } catch (e) {
       return res.status(500).json({ err: e.message || e });

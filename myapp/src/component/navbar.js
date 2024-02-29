@@ -3,16 +3,16 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/style/globalnavbar.scss";
-import axios from "axios";
 import { useNavigate } from "react-router";
 import { memo } from "react";
+import server from "../api/api";
 
 function GlobalNavbar() {
   const navigate = useNavigate();
 
   function logout() {
-    axios
-      .post("http://localhost:8080/logout")
+    server
+      .post("/logout")
       .then((res) => navigate('/login'))
       .catch((res) => console.log(res));
   }

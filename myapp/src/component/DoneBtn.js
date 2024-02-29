@@ -1,7 +1,9 @@
-import axios from 'axios';
 import React, { memo } from 'react'
 import { useDispatch } from 'react-redux';
 import { done } from '../store/Todostore';
+import server from "../api/api";
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 
 function DoneBtn({ id, status,setMessage }) {
     const dispatch = useDispatch()
@@ -9,8 +11,8 @@ function DoneBtn({ id, status,setMessage }) {
     function handleDone() {
 
         const doneStatus = status === true ? false : true
-        axios
-            .post("http://localhost:8080/", { id, status: doneStatus })
+        server
+            .post('/', { id, status: doneStatus })
             .then((response) => {
                 dispatch(done(id))
                 setMessage([response.data.message])
@@ -22,7 +24,7 @@ function DoneBtn({ id, status,setMessage }) {
         <>
 
             <button className={status ? 'table__green' : 'table__red'} onClick={handleDone}>
-                {status ? " done" : "not done"}
+                {status ? <CheckCircleOutlineIcon  sx={{color:'#24e424'}}/>: <HighlightOffOutlinedIcon sx={{color:'#ff2222'}}/>}
             </button>
         </>
     )

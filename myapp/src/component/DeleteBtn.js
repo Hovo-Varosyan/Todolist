@@ -1,16 +1,16 @@
-import React, { memo, useState } from 'react'
+import React, { memo } from 'react'
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button } from "@mui/material";
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { deleteTodo } from '../store/Todostore';
+import server from '../api/api';
 
 function DeleteBtn({ id, setMessage }) {
     const dispatch = useDispatch()
 
     function handleDelaete() {
-        axios
-            .delete(`http://localhost:8080/?id=${id}`,)
+        server
+            .delete(`/?id=${id}`,)
             .then((response) => {
                 setMessage([response.data.message])
                 dispatch(deleteTodo({ id }))

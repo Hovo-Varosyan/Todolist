@@ -1,13 +1,12 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react'
+import server from '../api/api';
 
 function Admin() {
     const [data, setData] = useState()
 
     useEffect(() => {
 
-        axios
-            .get("http://localhost:8080/userlist")
+        server("/userlist")
             .then((respons) => setData(respons.data.data))
             .catch((respons) => {
                 alert("error");

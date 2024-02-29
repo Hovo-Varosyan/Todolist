@@ -15,6 +15,8 @@ class Login {
           const token = jwt.sign({ name: user.name, id: user.id }, process.env.JWT_KEY, { expiresIn: "30d" });
           res.cookie("t_user", token, { maxAge: 30 * 24 * 60 * 60 * 1000 });
           res.cookie('t_role', user.role, { maxAge: 30 * 24 * 60 * 60 * 1000 })
+          res.cookie('t_id', String(user._id), { maxAge: 30 * 24 * 60 * 60 * 1000 })
+
           return res.json({
             message: 'successful',
           });

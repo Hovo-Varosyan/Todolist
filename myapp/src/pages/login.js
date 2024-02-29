@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "../assets/style/login.scss";
-import axios from "axios";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import server from "../api/api";
 
 function Login() {
   const navigate = useNavigate();
@@ -12,8 +12,8 @@ function Login() {
   document.body.style.backgroundColor = "black";
   function handleSubmit(e) {
     e.preventDefault();
-    axios
-      .post("http://localhost:8080/login", { email, password })
+    server
+      .post("/login", { email, password })
       .then((response) => {
         document.body.style.backgroundColor = "white";
         navigate("/");

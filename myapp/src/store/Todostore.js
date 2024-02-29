@@ -2,19 +2,21 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const todoSlice = createSlice({
     name: 'todo',
-    initialState: [],
+    initialState: { list: [], length: 0 },
     reducers: {
         getState(state, action) {
-            return action.payload
+            console.log(action.payload)
+            return { ...action.payload }
         },
         done(state, action) {
             try {
-                return state.map(todo => {
+                const newList = state.list.map(todo => {
                     if (todo._id === action.payload) {
                         return { ...todo, status: !(todo.status) };
                     }
                     return todo;
                 });
+                return { ...state, list: newList }
             }
             catch (err) {
                 console.error(err)
@@ -23,8 +25,8 @@ const todoSlice = createSlice({
         deleteTodo(state, action) {
             try {
                 const { id } = action.payload
-                const data = state.filter((element) => element._id !== id)
-                return [...data]
+                const data = state.list.filter((element) => element._id !== id)
+                return { list: data, length: state.length - 1 }
             }
             catch (err) {
                 console.error(err)
@@ -33,12 +35,13 @@ const todoSlice = createSlice({
         todoEdit(state, action) {
             try {
                 const { _id, title, description, status } = action.payload
-                return state.map(todo => {
+                const newList = state.map(todo => {
                     if (todo._id === _id) {
                         return { ...todo, status, title, description };
                     }
                     return todo;
                 });
+                return { list: newList, ...state }
             } catch (err) {
                 console.log(err)
             }

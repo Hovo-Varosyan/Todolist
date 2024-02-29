@@ -1,8 +1,8 @@
 
 import { useState } from "react";
 import "../assets/style/add.scss";
-import axios from "axios";
 import AlertMessage from '../component/Alert';
+import server from "../api/api";
 
 export default function AddTask() {
 
@@ -12,12 +12,15 @@ export default function AddTask() {
   const [message, setMessage] = useState([])
 
   function handleSubmit(e) {
+    console.log(status)
     e.preventDefault();
-    axios
-      .post("http://localhost:8080/task/add", { title, description, status })
-      .then((response) =>setMessage([response.data.message]) )
+    server
+      .post("/task/add", { title, description, status })
+      .then((response) => {
+        setMessage([response.data.message])
+        setStatus(false)
+      })
       .catch((response) => {
-        alert("error");
         console.log(response);
       });
   }
@@ -48,7 +51,7 @@ export default function AddTask() {
               onChange={() => setStatus(false)}
               name="done"
               id="notdone"
-              checked
+              checked={!status}
               required
             />
             <div className="red">
@@ -61,6 +64,7 @@ export default function AddTask() {
               type="radio"
               name="done"
               id="done"
+              checked={status}
               required
             />
             <div className="green">

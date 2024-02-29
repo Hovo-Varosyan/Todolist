@@ -1,7 +1,7 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import '../assets/style/task.scss'
+import server from '../api/api';
 
 function Task (){
 
@@ -9,7 +9,7 @@ function Task (){
     const { id } = useParams()
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/task/${id}`).then(res => setData(res.data.data))
+        server(`/task/${id}`).then(res => setData(res.data.data))
             .catch(err => console.log(err))
     }, [])
 

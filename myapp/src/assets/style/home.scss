@@ -26,6 +26,7 @@
   
 
   table {
+    margin-bottom: 40px;
     button {
       border: none;
       padding: 5px 10px;
@@ -65,31 +66,18 @@
     transform: scale(0.9);
   }
 }
-    tbody tr:nth-child(2n-1) {
-      background-color: #e8e8e8;
 
-      .table__red {
+.table__green, .table__red{
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  padding: 0;
+  border-radius: 50%;
 
-        background: linear-gradient(90deg, #e8e8e8 0%, rgb(255, 169, 169) 25%, rgb(255, 0, 0) 50%, rgba(255, 169, 169) 75%, #e8e8e8 100%);
-      }
-
-      .table__green {
-        background: linear-gradient(90deg, #e8e8e8 0%, rgb(138, 255, 120) 25%, rgb(33, 249, 0) 50%, rgb(138, 255, 120) 75%, #e8e8e8 100%);
-      }
-    }
-
-    tbody tr:nth-child(2n) {
-      background-color: #abaaaa;
-
-      .table__red {
-        background: linear-gradient(90deg, #abaaaa 0%, rgb(255, 169, 169) 25%, rgb(255, 0, 0) 50%, rgba(255, 169, 169) 75%, #abaaaa 100%);
-      }
-
-      .table__green {
-        background: linear-gradient(90deg, #abaaaa 0%, rgb(138, 255, 120) 25%, rgb(33, 249, 0) 50%, rgb(138, 255, 120) 75%, #abaaaa 100%);
-      }
-    }
-
+}
     //material ui
     .css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
       @extend %button

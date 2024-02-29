@@ -9,11 +9,9 @@ import Task from "./pages/task";
 import LoginRoute from './component/routesentings/loginroute'
 import PrivateRoute from './component/routesentings/privateroute'
 import Admin from "./pages/Admin";
-import AdminRoute from "./component/routesentings/Adminroute";
 import NotFound from "./pages/Notfound";
 
 function App() {
-  axios.defaults.withCredentials = true;
 
   return (
     <>
@@ -24,7 +22,7 @@ function App() {
         </Route>
         <Route element={<PrivateRoute />}>
           <Route path="/addtask" element={<AddTask />} />
-          <Route path="/" element={<Home />} />
+          <Route path="/:page?" element={<Home />} />
           <Route path="/task/:id" element={<Task />} />
           {
             document.cookie.split(';').includes(" t_role=admin") && <Route path="/userlist" element={<Admin />} />

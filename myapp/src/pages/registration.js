@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "../assets/style/login.scss";
-import axios from "axios";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import server from "../api/api";
 
 function Registr() {
   document.body.style.backgroundColor = "black";
@@ -10,17 +10,17 @@ function Registr() {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   function handleSubmit(e) {
     e.preventDefault();
-    axios
-      .post("http://localhost:8080/registr", { name, email, password })
+    server
+      .post("/registr", { name, email, password })
       .then((respons) => (
-           navigate('/login')
+        navigate('/login')
       ))
       .catch((respons) => {
-       console.log(respons)
-  });
+        console.log(respons)
+      });
   }
 
   return (

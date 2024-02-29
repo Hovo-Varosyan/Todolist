@@ -12,8 +12,9 @@ router.post('/logout', JwtVerification, Login.logout)
 router.post("/registr", Login.registr);
 router.post("/login", Login.login);
 //home
+router.get('/:page?', JwtVerification, Task.task)
+
 router.route('/')
-    .get(JwtVerification, Task.task)
     .delete(JwtVerification, Task.delete)
     .post(JwtVerification, Task.done)
     .patch(JwtVerification, Task.edit)
