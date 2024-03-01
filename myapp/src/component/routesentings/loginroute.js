@@ -1,10 +1,12 @@
+import Cookies from "js-cookie";
 import { Navigate, Outlet } from "react-router-dom";
 
 function LoginRoute  ()  {
-  return document.cookie.includes("t_user") === false ? (
+  const cookie=Cookies.get("t_user")
+  return Boolean(cookie) === false ? (
     <Outlet />
   ) : (
-    <Navigate to="/" />
+    <Navigate to="/home" />
   );
 };
 

@@ -1,0 +1,23 @@
+@use "./color.scss";
+
+%flex {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+%button {
+    border: 1px solid color.$button-color;
+
+    &:hover {
+        animation: button-bg-color 1s forwards;
+    }
+
+    @keyframes button-bg-color {
+        to {
+            background-color: color.$button-color;
+            color: white;
+            box-shadow: 1px 1px 15px color.$button-color;
+        }
+    }
+}

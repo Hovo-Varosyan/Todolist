@@ -1,14 +1,17 @@
-.task__main{
-    div{
+.task__main {
+    div {
         padding: 30px;
-        span{
+        span {
             font-size: 25px;
             margin-bottom: 30px;
             display: block;
             text-align: center;
         }
-        p{
+        p {
             font-size: 1.5rem;
         }
+    }
+    h1 {
+        text-align: center;
     }
 }

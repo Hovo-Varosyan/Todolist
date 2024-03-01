@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../assets/style/login.scss";
+import "../assets/style/pageStyle/login.scss";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import server from "../api/api";
@@ -10,22 +10,20 @@ function Registr() {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   function handleSubmit(e) {
     e.preventDefault();
     server
       .post("/registr", { name, email, password })
-      .then((respons) => (
-        navigate('/login')
-      ))
+      .then((respons) => navigate("/login"))
       .catch((respons) => {
-        console.log(respons)
+        console.log(respons);
       });
   }
 
   return (
     <>
-      <main className="login_background">
+      <section className="login_background">
         <div className="background">
           <div className="shape"></div>
           <div className="shape"></div>
@@ -66,11 +64,11 @@ function Registr() {
           />
 
           <button>Registration</button>
-          <div className='page__link'>Do you have an account?<Link to="/login">Login</Link></div>
-
+          <div className="page__link">
+            Do you have an account?<Link to="/login">Login</Link>
+          </div>
         </form>
-
-      </main>
+      </section>
     </>
   );
 }

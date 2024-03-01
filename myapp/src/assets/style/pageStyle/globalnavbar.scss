@@ -1,0 +1,13 @@
+@use "../root/color.scss";
+.bg-body-tertiary {
+   background-color: color.$navbar-bg-color !important;
+   button {
+      border: none;
+      background-color: color.$navbar-bg-color !important;
+      color: color.$navbar-color;
+      width: max-content;
+      &:hover {
+         color: color.$navbar-active-color;
+      }
+   }
+}

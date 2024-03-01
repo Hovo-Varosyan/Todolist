@@ -1,0 +1,81 @@
+@use "../root/color.scss";
+@import "../root/method.scss";
+
+.home__main {
+  width: 100%;
+
+  table {
+    margin-bottom: 40px;
+
+    button {
+      border: none;
+      padding: 5px 10px;
+      height: 100%;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    th {
+      padding: 5px;
+
+      font-size: 1.1rem;
+
+      &:hover {
+        scale: (1.1);
+      }
+    }
+
+    td {
+      padding: 5px;
+      font-size: 1rem;
+    }
+
+    .css-i4bv87-MuiSvgIcon-root {
+      height: 0.9rem;
+      margin-right: 0.3rem;
+    }
+
+    .table__red {
+      &:active {
+        transform: scale(0.9);
+      }
+    }
+
+    .table__green {
+      &:active {
+        transform: scale(0.9);
+      }
+    }
+
+    .table__green,
+    .table__red {
+      margin-left: auto;
+      margin-right: auto;
+      @extend %flex;
+      background-color: color.$main-color;
+      padding: 0;
+      border-radius: 50%;
+    }
+
+    //material ui
+    .css-1rwt2y5-MuiButtonBase-root-MuiButton-root {
+      @extend %button;
+    }
+
+    .css-1e6y48t-MuiButtonBase-root-MuiButton-root {
+      @extend %button;
+    }
+  }
+}
+
+.MuiPagination-root {
+  @extend %flex;
+}
+
+@media screen and (max-width: 800px) {
+  table {
+    max-width: 500px !important;
+  }
+}

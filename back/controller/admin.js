@@ -3,7 +3,8 @@ const userModel = require("../models/usermodel")
 class Admin {
     static userList = async (req, res, next) => {
         try {
-            const userData = await userModel.find().select('name email')
+            const userData = await userModel.find().select('name email') 
+
             if (userData) {
                 const data = userData.length > 0 ? userData : "empty";
                 return res.json({ data })

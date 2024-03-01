@@ -5,7 +5,6 @@ class Task {
 
   static add = async (req, res, next) => {
     try {
-      console.log(req.body)
       const updateTask = await userModel.findByIdAndUpdate(
         req.user.id,
         {
@@ -27,7 +26,7 @@ class Task {
   static task = async (req, res, next) => {
     try {
       const userId = req.user.id
-      const page = req.params.page !=='undefined'?req.params.page:1
+      const page = req.params.page !== 'undefined' ? req.params.page : 1
       const data = await userModel.findById({ _id: userId }).select('list -_id')
       if (data) {
         const limit = data.list.slice(((page - 1) * 50), page * 50)

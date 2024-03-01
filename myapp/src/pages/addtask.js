@@ -1,24 +1,22 @@
-
 import { useState } from "react";
-import "../assets/style/add.scss";
-import AlertMessage from '../component/Alert';
+import "../assets/style/pageStyle/add.scss";
+import AlertMessage from "../component/Alert";
 import server from "../api/api";
-
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
 export default function AddTask() {
-
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
   const [status, setStatus] = useState(false);
-  const [message, setMessage] = useState([])
+  const [message, setMessage] = useState([]);
 
   function handleSubmit(e) {
-    console.log(status)
     e.preventDefault();
     server
       .post("/task/add", { title, description, status })
       .then((response) => {
-        setMessage([response.data.message])
-        setStatus(false)
+        setMessage([response.data.message]);
+        setStatus(false);
       })
       .catch((response) => {
         console.log(response);
@@ -55,7 +53,9 @@ export default function AddTask() {
               required
             />
             <div className="red">
-              <label htmlFor="notdone"> Not Done</label>
+              <label htmlFor="notdone">
+                <HighlightOffOutlinedIcon sx={{ color: "#ff2222" }} />
+              </label>
             </div>
           </div>
           <div className="radio">
@@ -68,18 +68,17 @@ export default function AddTask() {
               required
             />
             <div className="green">
-              <label htmlFor="done"> Done</label>
-
+              <label htmlFor="done">
+                <CheckCircleOutlineIcon sx={{ color: "#24e424" }} />
+              </label>
             </div>
-
           </div>
-
           <input type="submit" value="Add" />
         </form>
       </section>
-      {
-        message.length > 0 ? <AlertMessage message={message} setMessage={setMessage} /> : null
-      }
+      {message.length > 0 ? (
+        <AlertMessage message={message} setMessage={setMessage} />
+      ) : null}
     </main>
   );
 }

@@ -1,7 +1,7 @@
 import { memo, useEffect } from 'react';
-import '../assets/style/Alert.scss'
+import '../assets/style/pageStyle/Alert.scss'
 function AlertMessage({ message, setMessage }) {
-    
+
     useEffect(() => {
         let timer;
 

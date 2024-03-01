@@ -1,16 +1,8 @@
+@use "../root/color.scss";
+@import "../root/method.scss";
 .add {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @extend %flex;
   width: 100dvw;
-
-  .red {
-    background: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(255, 169, 169) 25%, rgb(255, 0, 0) 50%, rgba(255, 169, 169) 75%, rgb(255, 255, 255) 100%);
-  }
-
-  .green {
-    background: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(138, 255, 120) 25%, rgb(33, 249, 0) 50%, rgb(138, 255, 120) 75%, rgb(255, 255, 255) 100%);
-  }
 
   .radio {
     display: flex;
@@ -47,13 +39,13 @@
     }
 
     input[type="submit"] {
-      background-color: blue;
+      background-color: color.$button-color;
       width: max-content;
       color: white;
       padding: 5px 20px;
       border-radius: 15px;
-      border:none;
-      &:active{
+      border: none;
+      &:active {
         background-color: rgb(77, 77, 104);
         transform: scale(0.9);
       }

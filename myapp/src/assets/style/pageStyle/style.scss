@@ -1,5 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner:wght@400..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner:wght@400..700&family=Gilda+Display&display=swap');
+@use "../root/color.scss";
+@import url("https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner:wght@400..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Edu+TAS+Beginner:wght@400..700&family=Gilda+Display&display=swap");
+
+body {
+    font-size: 16px;
+}
 
 * {
     margin: 0;
@@ -7,7 +12,6 @@
     box-sizing: border-box;
     font-family: "Playfair Display", serif;
     font-style: normal;
-
 }
 
 th,
@@ -19,8 +23,6 @@ h5,
 h6 {
     font-style: normal;
     font-family: "Gilda Display", serif !important;
-
-
 }
 
 td,
@@ -36,23 +38,32 @@ h6 {
     word-wrap: break-word !important;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 30px 0;
+}
+
 table,
 tr,
 th,
 td {
     border: 1px solid rgb(187, 187, 187) !important;
-    button{
+
+    button {
         word-break: normal;
     }
+
     word-break: break-all;
 }
 
 table {
     min-width: 100%;
     text-align: center;
-
 }
-
 
 a {
     text-decoration: none;
@@ -60,18 +71,14 @@ a {
 
 main {
     padding: 20px;
+    background-color: color.$main-color;
 }
 
-
-
-.red {
-    background: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(255, 169, 169) 25%, rgb(255, 0, 0) 50%, rgba(255, 169, 169) 75%, rgb(255, 255, 255) 100%);
-}
-
-.green {
-    background: linear-gradient(90deg, rgb(255, 255, 255) 0%, rgb(138, 255, 120) 25%, rgb(33, 249, 0) 50%, rgb(138, 255, 120) 75%, rgb(255, 255, 255) 100%);
-}
-
-button {
+button,
+label {
     cursor: pointer;
+}
+
+.warning{
+    color: color.$waring;
 }

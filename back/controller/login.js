@@ -20,6 +20,11 @@ class Login {
           return res.json({
             message: 'successful',
           });
+        } else {
+          return res.status(401).json({
+            message: false,
+            err: 'False login/password'
+          });
         }
       } else {
         return res.status(401).json({
@@ -40,7 +45,6 @@ class Login {
       const { email, name, password } = req.body;
       const getUser = await userModel.findOne({ email })
       if (getUser) {
-        console.log(getUser)
         return res.status(401).json({ errorMessage: "email is exist" });
       }
 

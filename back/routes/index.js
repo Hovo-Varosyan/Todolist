@@ -1,24 +1,18 @@
 var express = require("express");
 const Login = require("../controller/login");
-const Task = require("../controller/task");
 const JwtVerification = require("../utils/veryfication");
 const taskRouter = require('./task');
 const AdminVeryfication = require("../utils/adminveryfication");
-const AdminRouter=require('./admin')
+const adminRouter=require('./admin');
+const homeRouter=require('./home')
 var router = express.Router();
 
-//login
 router.post('/logout', JwtVerification, Login.logout)
 router.post("/registr", Login.registr);
 router.post("/login", Login.login);
-//home
-router.get('/:page?', JwtVerification, Task.task)
 
-router.route('/')
-    .delete(JwtVerification, Task.delete)
-    .post(JwtVerification, Task.done)
-    .patch(JwtVerification, Task.edit)
-//task
+router.use('/home', JwtVerification, homeRouter)
 router.use('/task', JwtVerification, taskRouter)
-router.use('/userlist', JwtVerification, AdminVeryfication, AdminRouter)
+router.use('/userlist', JwtVerification, AdminVeryfication, adminRouter)
+
 module.exports = router;

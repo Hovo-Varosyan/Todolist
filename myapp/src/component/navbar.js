@@ -2,10 +2,11 @@ import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../assets/style/globalnavbar.scss";
+import "../assets/style/pageStyle/globalnavbar.scss";
 import { useNavigate } from "react-router";
 import { memo } from "react";
 import server from "../api/api";
+import Cookies from "js-cookie";
 
 function GlobalNavbar() {
   const navigate = useNavigate();
@@ -13,10 +14,9 @@ function GlobalNavbar() {
   function logout() {
     server
       .post("/logout")
-      .then((res) => navigate('/login'))
+      .then((res) => navigate("/login"))
       .catch((res) => console.log(res));
   }
-
 
   return (
     <Navbar expand="lg" variant="dark" className="bg-body-tertiary">
@@ -25,9 +25,11 @@ function GlobalNavbar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/">Home</Nav.Link>
+            <Nav.Link href="/home">Home</Nav.Link>
             <Nav.Link href="/addtask">Add Task</Nav.Link>
-            {document.cookie.split(';').includes(" t_role=admin") && <Nav.Link href="/userlist">User List</Nav.Link>}
+            {Cookies.get('t_role') === 'admin' && (
+              <Nav.Link href="/userlist">User List</Nav.Link>
+            )}
             <button className="nav-link" onClick={() => logout()}>
               Log out
             </button>
