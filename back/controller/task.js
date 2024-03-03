@@ -18,7 +18,7 @@ class Task {
       );
       return res.json({ message: "Task added successfully" });
     } catch (e) {
-      return res.json({ err: e.message || e });
+      return next(err)
     }
 
   };
@@ -47,7 +47,7 @@ class Task {
         return res.status(404).json({ err: "data not devined" });
       }
     } catch (e) {
-      return res.status(500).json({ err: e.message || e });
+      return next(err)
     }
 
   };
@@ -69,7 +69,7 @@ class Task {
 
       return res.status(200).json({ message: 'Task deleted successfully' });
     } catch (error) {
-      return res.status(500).json({ err: error.message });
+      return next(err)
     }
 
   };
@@ -94,7 +94,7 @@ class Task {
       return res.status(200).json({ message: 'Task status changed successfully' });
 
     } catch (error) {
-      return res.status(500).json({ err: error.message });
+      return next(err)
     }
 
   }
@@ -112,7 +112,7 @@ class Task {
       }
 
     } catch (err) {
-      return res.status(500).json({ err: err.message || err });
+      return next(err)
 
     }
 
@@ -142,8 +142,7 @@ class Task {
         res.status(404).json({ message: 'Document not found' })
       }
     } catch (err) {
-      return res.status(500).json({ err: err.message || err });
-
+      return next(err)
     }
   }
 

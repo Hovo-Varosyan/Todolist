@@ -41,12 +41,18 @@ const io = new Server(server, {
   connectionStateRecovery: {},
 });
 app.use("/", indexRouter);
-
+let connect = 0
 io.on("connection", (socket) => {
-  socket.emit("status", io.engine.clientsCount);
+  socket.on("online", () => {
+    connect++;
+    io.emit('status', connect);
+  });
+  socket.on("offline", () => {
+    connect--
+    io.emit('status', connect);
+  });
 
   socket.on("disconnect", () => {
-    socket.emit("status", io.engine.clientsCount);
   });
 });
 
@@ -63,7 +69,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.json({ err: err });
+  res.json({ err: err.message || err });
 });
 
 module.exports = { app, server };

@@ -14,7 +14,7 @@ class Admin {
             }
 
         } catch (err) {
-            return res.status(500).json({ err: err.maessage || err })
+            return next(err)
         }
     }
 }

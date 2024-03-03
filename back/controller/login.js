@@ -1,10 +1,16 @@
 const userModel = require("../models/usermodel");
 const bcrypt = require("bcrypt");
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const  schema  = require("../validate/login");
+
 class Login {
   static login = async (req, res, next) => {
     try {
+      const { error, value } = schema.validate(req.body)
 
+      if (error) {
+        return res.status(401).json({ err: error.message })
+      }
       const { email, password } = req.body;
       const user = await userModel.findOne({ email });
       if (user) {
@@ -33,15 +39,18 @@ class Login {
         });
       }
     } catch (err) {
-      return res.status(401).json({ err: err.mesage || err });
+      return res.status(401).json({ err: err.message || err });
     }
   };
 
   static registr = async (req, res, next) => {
     try {
-      if (!(req.body.name && req.body.email && req.body.password)) {
-        return res.status(401).json({ errorMessage: "not valid data" });
+      const { error, value } = schema.validate(req.body,{ context: { isRequired: true } })
+
+      if (error) {
+        return res.status(401).json({ err: error.message })
       }
+
       const { email, name, password } = req.body;
       const getUser = await userModel.findOne({ email })
       if (getUser) {
@@ -64,7 +73,7 @@ class Login {
         }
       });
     } catch (err) {
-      return res.status(500).json({ errorMessage: err.message || err });
+      return res.status(401).json({ errorMessage: err.message || err });
     }
   };
 
