@@ -37,6 +37,7 @@ function Registr() {
             onChange={(e) => {
               setName(e.target.value);
             }}
+            pattern="^[a-zA-Z\s]+$"
             placeholder="Name"
             id="name"
             name="name"

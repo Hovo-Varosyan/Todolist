@@ -1,10 +1,15 @@
+const Joi = require("joi");
 const userModel = require("../models/usermodel");
+const schema = require("../validate/task");
 class Task {
-
-
 
   static add = async (req, res, next) => {
     try {
+      const { error, value } = schema.validate(req.body, { context: { isRequired: false } })
+      if (error) {
+        return next(error)
+      }
+
       const updateTask = await userModel.findByIdAndUpdate(
         req.user.id,
         {
@@ -17,8 +22,8 @@ class Task {
         { new: true }
       );
       return res.json({ message: "Task added successfully" });
-    } catch (e) {
-      return next(err)
+    } catch (error) {
+      return next(error)
     }
 
   };
@@ -26,7 +31,20 @@ class Task {
   static task = async (req, res, next) => {
     try {
       const userId = req.user.id
-      const page = req.params.page !== 'undefined' ? req.params.page : 1
+      const page = req.params.page !== undefined ? parseInt(req.params.page) : 1
+      const idSchema = Joi.string().min(1).trim().required()
+      const pageSchema = Joi.number().min(1).required().integer().positive()
+
+      const userIdValidation = idSchema.validate(userId);
+      const pageValidation = pageSchema.validate(page);
+
+      if (userIdValidation.error) {
+        return next(userIdValidation.error)
+      }
+      if (pageValidation.error) {
+        return next(pageValidation.error)
+      }
+
       const data = await userModel.findById({ _id: userId }).select('list -_id')
       if (data) {
         const limit = data.list.slice(((page - 1) * 50), page * 50)
@@ -46,8 +64,8 @@ class Task {
       } else {
         return res.status(404).json({ err: "data not devined" });
       }
-    } catch (e) {
-      return next(err)
+    } catch (error) {
+      return next(error)
     }
 
   };
@@ -56,6 +74,19 @@ class Task {
     try {
       const userId = req.user.id;
       const listId = req.query.id;
+
+      const schema = Joi.string().min(1).trim().required()
+
+      const userIdValidation = schema.validate(userId);
+      const listIdValidation = schema.validate(listId);
+
+      if (userIdValidation.error) {
+        return next(userIdValidation.error)
+      }
+      if (listIdValidation.error) {
+        return next(listIdValidation.error)
+      }
+
 
       const updatedUser = await userModel.findByIdAndUpdate(
         { _id: userId },
@@ -69,7 +100,7 @@ class Task {
 
       return res.status(200).json({ message: 'Task deleted successfully' });
     } catch (error) {
-      return next(err)
+      return next(error)
     }
 
   };
@@ -78,7 +109,17 @@ class Task {
 
 
     try {
-
+      const schema = Joi.object({
+        id: Joi.string()
+          .min(1)
+          .trim()
+          .required(),
+        status: Joi.boolean()
+      })
+      const { error, value } = schema.validate(req.body)
+      if (error) {
+        return next(error)
+      }
       const userId = req.user.id;
       const { id: listId, status } = req.body
 
@@ -94,16 +135,28 @@ class Task {
       return res.status(200).json({ message: 'Task status changed successfully' });
 
     } catch (error) {
-      return next(err)
+      return next(error)
     }
 
   }
 
   static getTask = async (req, res, next) => {
-
     try {
       const userId = req.user.id
       const listId = req.params.id
+      const schema = Joi.string().min(1).trim().required()
+
+      const userIdValidation = schema.validate(userId);
+      const listIdValidation = schema.validate(listId);
+
+      
+      if (userIdValidation.error) {
+        return next(userIdValidation.error)
+      }
+      if (listIdValidation.error) {
+        return next(listIdValidation.error)
+      }
+
       const data = await userModel.findOne({ _id: userId, 'list._id': listId }, { 'list.$': 1 })
       if (data) {
         return res.json({ data: data.list[0] })
@@ -111,9 +164,8 @@ class Task {
         return res.status(404).json({ message: 'not data' })
       }
 
-    } catch (err) {
-      return next(err)
-
+    } catch (error) {
+      return next(error)
     }
 
   }
@@ -121,6 +173,10 @@ class Task {
   static edit = async (req, res, next) => {
     try {
       const userId = req.user.id;
+      const { error, value } = schema.validate(req.body, { context: { isRequired: true } })
+      if (error) {
+        return next(error)
+      }
       const { title, description, status, id: listId } = req.body
 
       const updateData = await userModel.findOneAndUpdate({ _id: userId, 'list._id': listId },
@@ -141,8 +197,8 @@ class Task {
       } else {
         res.status(404).json({ message: 'Document not found' })
       }
-    } catch (err) {
-      return next(err)
+    } catch (error) {
+      return next(error)
     }
   }
 
