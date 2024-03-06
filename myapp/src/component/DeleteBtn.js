@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Button } from "@mui/material";
 import { useDispatch } from "react-redux";
@@ -7,20 +7,24 @@ import server from "../api/api";
 
 function DeleteBtn({ id, setMessage }) {
   const dispatch = useDispatch();
-
+  const [disabled, setDisabled]= useState()
   function handleDelaete() {
+    setDisabled(true);
     server
-      .delete(`/?id=${id}`)
+      .delete(`/home?id=${id}`)
       .then((response) => {
-        setMessage([response.data.message]);
         dispatch(deleteTodo({ id }));
+        setMessage([{ message: response.data.message, status: 'success' }]);
       })
-      .catch((respons) => console.log(respons));
+      .catch((error) => {
+        console.log(error)
+        setMessage([{ message: "ERROR", status: 'warning' }])
+      });
   }
 
   return (
     <>
-      <Button onClick={handleDelaete} startIcon={<DeleteIcon />}>
+      <Button onClick={() => {  handleDelaete() }}  startIcon={<DeleteIcon />}>
         DELETE
       </Button>
     </>

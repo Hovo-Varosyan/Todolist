@@ -24,9 +24,10 @@ const todoSlice = createSlice({
       try {
         const { id } = action.payload;
         const data = state.list.filter((element) => element._id !== id);
+        console.log(id)
         return {
-          list: state.length - 1 !== 0 ? data : "empty",
-          length: state.length - 1,
+          list: data.length - 1 >= 0 ? data : "empty",
+          length: state.length>0?state.length - 1:state.length,
         };
       } catch (err) {
         console.error(err);
@@ -34,14 +35,16 @@ const todoSlice = createSlice({
     },
     todoEdit(state, action) {
       try {
+        console.log(action.payload)
         const { _id, title, description, status } = action.payload;
-        const newList = state.map((todo) => {
+        const newList = state.list.map((todo) => {
           if (todo._id === _id) {
             return { ...todo, status, title, description };
           }
           return todo;
         });
-        return { list: newList, ...state };
+        return { ...state, list: newList };
+
       } catch (err) {
         console.log(err);
       }

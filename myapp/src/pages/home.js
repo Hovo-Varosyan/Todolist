@@ -13,7 +13,6 @@ import AlertMessage from "../component/Alert";
 import server from "../api/api";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
-import Cookies from "js-cookie";
 
 function Home() {
   const [show, setShow] = useState(false);
@@ -30,13 +29,14 @@ function Home() {
       })
       .catch((response) => console.log(response));
   }, [params]);
-
+console.log(list.length, length)
   useEffect(() => {
-    if (list.length === 0 && length !== 0) {
+    if (list === 'empty'  && parseInt(params.page) > 1) {
       const url = parseInt(params.page) - 1;
-      navigate("/" + url);
+      navigate("/home/" + url);
     }
   }, [list]);
+
   return (
     <>
       <main>
@@ -107,8 +107,8 @@ function Home() {
                 <Stack className="" spacing={2}>
                   <Pagination
                     count={Math.ceil(parseInt(length) / 50)}
-                    onChange={(e, value) => navigate(`/${value}`)}
-                    defaultPage={parseInt(params.page) || 1}
+                    onChange={(e, value) => navigate(`/home/${value}`)}
+                    page={parseInt(params.page) || 1}
                     size="large"
                     color="primary"
                   />

@@ -4,9 +4,9 @@
  * Module dependencies.
  */
 
-var { app } = require('../app');
+var  app  = require('../app');
 var debug = require('debug')('back:server');
-const { server } = require('../app')
+const http=require('http')
 /**
  * Get port from environment and store in Express.
  */
@@ -17,6 +17,7 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
+const server = http.createServer(app);;
 
 
 /**

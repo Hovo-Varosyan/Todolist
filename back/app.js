@@ -5,8 +5,6 @@ var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const http = require("http");
-const { Server } = require("socket.io");
 require("dotenv").config();
 var app = express();
 
@@ -33,28 +31,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
-const server = http.createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:3000",
-  },
-  connectionStateRecovery: {},
-});
-app.use("/", indexRouter);
-let connect = 0
-io.on("connection", (socket) => {
-  socket.on("online", () => {
-    connect++;
-    io.emit('status', connect);
-  });
-  socket.on("offline", () => {
-    connect--
-    io.emit('status', connect);
-  });
 
-  socket.on("disconnect", () => {
-  });
-});
+app.use("/", indexRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -72,4 +50,4 @@ app.use(function (err, req, res, next) {
   res.json({ err: err.message || err });
 });
 
-module.exports = { app, server };
+module.exports =  app;

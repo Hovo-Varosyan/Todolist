@@ -21,8 +21,8 @@ function AlertMessage({ message, setMessage }) {
             const alertDiv = document.createElement('div');
             alertDiv.className = 'main__alert';
             alertDiv.innerHTML = `
-                <div class="alert alert-success" role="alert">
-                    ${message[0]}
+                <div class="alert alert-${message[0].status}" role="alert">
+                    ${message[0].message}
                 </div>
             `;
             const main = document.getElementsByTagName('main')[0]

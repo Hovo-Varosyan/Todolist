@@ -1,7 +1,7 @@
 const userModel = require("../models/usermodel");
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
-const  schema  = require("../validate/login");
+const schema = require("../validate/login");
 
 class Login {
   static login = async (req, res, next) => {
@@ -19,13 +19,14 @@ class Login {
         if (match) {
 
           const token = jwt.sign({ name: user.name, id: user.id }, process.env.JWT_KEY, { expiresIn: "30d" });
-          res.cookie("t_user", token, { maxAge: 30 * 24 * 60 * 60 * 1000 });
+          res.cookie("t_user", token, { maxAge: 30 * 24 * 60 * 60 * 1000 , httpOnly:true });
           res.cookie('t_role', user.role, { maxAge: 30 * 24 * 60 * 60 * 1000 })
           res.cookie('t_id', String(user._id), { maxAge: 30 * 24 * 60 * 60 * 1000 })
 
           return res.json({
             message: 'successful',
           });
+
         } else {
           return res.status(401).json({
             message: false,
@@ -45,17 +46,11 @@ class Login {
 
   static registr = async (req, res, next) => {
     try {
-      const { error, value } = schema.validate(req.body,{ context: { isRequired: true } })
-
+      const { error, value } = schema.validate(req.body, { context: { isRequired: true } })
       if (error) {
         return res.status(401).json({ err: error.message })
       }
-
       const { email, name, password } = req.body;
-      const getUser = await userModel.findOne({ email })
-      if (getUser) {
-        return res.status(401).json({ errorMessage: "email is exist" });
-      }
 
       bcrypt.genSalt(10, function (err, salt) {
         if (err) {
@@ -65,15 +60,20 @@ class Login {
             if (err) {
               next(err);
             } else {
-              const newUser = new userModel({ email, name, password: hash });
-              await newUser.save();
+              try {
+                const newUser = new userModel({ email, name, password: hash });
+                await newUser.save();
+
+              } catch (error) {
+                return res.status(500).json({ err: error.code || err });
+              }
               return res.json({ message: "successful" });
             }
           });
         }
       });
-    } catch (err) {
-      return res.status(401).json({ errorMessage: err.message || err });
+    } catch (error) {
+      return res.status(401).json({ err: error });
     }
   };
 

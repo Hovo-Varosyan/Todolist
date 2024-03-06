@@ -31,7 +31,7 @@ class Task {
   static task = async (req, res, next) => {
     try {
       const userId = req.user.id
-      const page = req.params.page !== undefined ? parseInt(req.params.page) : 1
+      const page = req.params.page !== "undefined" ? parseInt(req.params.page) : 1
       const idSchema = Joi.string().min(1).trim().required()
       const pageSchema = Joi.number().min(1).required().integer().positive()
 
@@ -74,7 +74,7 @@ class Task {
     try {
       const userId = req.user.id;
       const listId = req.query.id;
-
+ 
       const schema = Joi.string().min(1).trim().required()
 
       const userIdValidation = schema.validate(userId);
@@ -93,13 +93,14 @@ class Task {
         { $pull: { list: { _id: listId } } },
         { new: true }
       );
-
+console.log(1)
       if (!updatedUser) {
         return res.status(500).json({ message: "data false" });
       }
 
       return res.status(200).json({ message: 'Task deleted successfully' });
     } catch (error) {
+      console.log(error)
       return next(error)
     }
 

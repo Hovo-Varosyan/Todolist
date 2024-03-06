@@ -11,12 +11,12 @@ function DoneBtn({ id, status, setMessage }) {
   function handleDone() {
     const doneStatus = status === true ? false : true;
     server
-      .post("/", { id, status: doneStatus })
+      .post("/home", { id, status: doneStatus })
       .then((response) => {
         dispatch(done(id));
-        setMessage([response.data.message]);
+        setMessage([{message:response.data.message, status:'success'}]);
       })
-      .catch((response) => console.log(response));
+      .catch((response) =>  setMessage([{message:"ERROR", status:'warning'}])    );
   }
 
   return (

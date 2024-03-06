@@ -9,16 +9,16 @@ export default function TaskEdit({ id, setShow, setMessage }) {
 
   const dispatch = useDispatch();
   const [data, setData] = useState(false);
-  
+
   function handleEdit(e) {
     e.preventDefault();
     server
-      .patch("/", { ...data, id })
+      .patch("/home", { title: data.title, description: data.description, status: data.status, id: data._id })
       .then((response) => {
         dispatch(todoEdit({ ...response.data.data }));
-        setMessage([response.data.message]);
+        setMessage([{ message: response.data.message, status: 'success' }]);
       })
-      .catch((response) => console.log(response));
+      .catch((response) => setMessage([{ message: "ERROR", status: 'warning' }]));
   }
 
   useEffect(() => {

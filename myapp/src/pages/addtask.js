@@ -15,11 +15,11 @@ export default function AddTask() {
     server
       .post("/task/add", { title, description, status })
       .then((response) => {
-        setMessage([response.data.message]);
+        setMessage([{message:response.data.message, status:"success"}]);
         setStatus(false);
       })
-      .catch((response) => {
-        console.log(response);
+      .catch((error) => {
+          setMessage([{message:"ERROR", status:'warning'}])    
       });
   }
 

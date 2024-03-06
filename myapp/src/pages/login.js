@@ -8,24 +8,23 @@ function Login() {
   const navigate = useNavigate();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const [err, setErr] = useState(false)
+  const [resError, setResError] = useState("")
   document.body.style.backgroundColor = "black";
   function handleSubmit(e) {
     e.preventDefault();
     server
       .post("/login", { email, password })
       .then((response) => {
-        if (err) {
-          setErr(false)
-        }
+        setResError("")
+
         document.body.style.backgroundColor = "white";
         navigate("/home");
       })
       .catch((err) => {
-        console.log(err)
         if (err.response && err.response.data.message === false) {
-          setErr(err.response.data.err)
+          setResError(err.response.data.err)
         } else {
+          setResError('ERROR')
           console.log(err)
         }
       });
@@ -40,10 +39,10 @@ function Login() {
         </div>
         <form className="login" onSubmit={handleSubmit}>
           <h3>Login Here</h3>
-          {err && <p className="warning">{err}</p>}
+          {resError && <p className="warning">{resError}</p>}
           <label htmlFor="email"> Email</label>
           <input
-            type="text"
+            type="email"
             onChange={(e) => setEmail(e.target.value)}
             placeholder="Email or Phone"
             id="email"
@@ -52,6 +51,7 @@ function Login() {
 
           <label htmlFor="password">Password</label>
           <input
+            minLength="6"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"

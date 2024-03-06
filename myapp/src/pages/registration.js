@@ -10,14 +10,25 @@ function Registr() {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [resError, setResError] = useState("")
   const navigate = useNavigate();
+
   function handleSubmit(e) {
     e.preventDefault();
     server
       .post("/registr", { name, email, password })
-      .then((respons) => navigate("/login"))
-      .catch((respons) => {
-        console.log(respons);
+      .then((response) => {
+        setResError("")
+        navigate("/login")
+      })
+      .catch((error) => {
+        if (error.response && error.response.data.err === 11000) {
+          setResError('Email busy')
+        } else {
+          console.log(error)
+          setResError('ERROR')
+
+        }
       });
   }
 
@@ -30,7 +41,7 @@ function Registr() {
         </div>
         <form className="login" onSubmit={handleSubmit}>
           <h3>Registration </h3>
-
+          {resError && <p className="warning">{resError}</p>}
           <label htmlFor="name"> Name</label>
           <input
             type="text"
@@ -40,14 +51,17 @@ function Registr() {
             pattern="^[a-zA-Z\s]+$"
             placeholder="Name"
             id="name"
+            minLength="3"
             name="name"
+            required
           />
           <label htmlFor="email"> Email</label>
           <input
-            type="text"
+            type="email"
             placeholder="Email or Phone"
             id="email"
             name="email"
+            required
             onChange={(e) => {
               setEmail(e.target.value);
             }}
@@ -59,6 +73,8 @@ function Registr() {
             placeholder="Password"
             name="password"
             id="password"
+            required
+            minLength="6"
             onChange={(e) => {
               setPassword(e.target.value);
             }}
