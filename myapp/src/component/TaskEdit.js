@@ -4,21 +4,51 @@ import CloseButton from "react-bootstrap/CloseButton";
 import { useDispatch } from "react-redux";
 import { todoEdit } from "../store/Todostore";
 import server from "../api/api";
+import FormButton from "./FormButton";
 
-export default function TaskEdit({ id, setShow, setMessage }) {
-
+export default function TaskEdit({
+  id,
+  btnLoading,
+  setBtnLoading,
+  setShow,
+  setMessage,
+}) {
   const dispatch = useDispatch();
   const [data, setData] = useState(false);
+  const [loading, setLoading] = useState(false);
+  
+  useEffect(() => {
+    if (btnLoading.includes(id)) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [btnLoading]);
 
-  function handleEdit(e) {
+  async function handleEdit(e) {
+    setBtnLoading((prevState) => {
+      return [...prevState, id];
+    });
     e.preventDefault();
     server
-      .patch("/home", { title: data.title, description: data.description, status: data.status, id: data._id })
+      .patch("/home", {
+        title: data.title,
+        description: data.description,
+        status: data.status,
+        id: data._id,
+      })
       .then((response) => {
         dispatch(todoEdit({ ...response.data.data }));
-        setMessage([{ message: response.data.message, status: 'success' }]);
+        setMessage([{ message: response.data.message, status: "success" }]);
       })
-      .catch((response) => setMessage([{ message: "ERROR", status: 'warning' }]));
+      .catch((response) =>
+        setMessage([{ message: "ERROR", status: "warning" }])
+      )
+      .finally(() => {
+        setBtnLoading((prevState) =>
+          prevState.filter((itemId) => itemId !== id)
+        );
+      });
   }
 
   useEffect(() => {
@@ -89,7 +119,13 @@ export default function TaskEdit({ id, setShow, setMessage }) {
                   <label htmlFor="done"> Done</label>
                 </div>
               </div>
-              <input type="submit" value="Edit" />
+              <FormButton
+                type={"submit"}
+                btnVariant={"contained"}
+                loading={loading}
+                icon={"edit"}
+                text={"EDIT"}
+              />
             </form>
           ) : (
             "Loading..."

@@ -3,7 +3,9 @@
 .add {
   @extend %flex;
   width: 100dvw;
-
+.form__radio{
+  margin:10px 0 ;
+}
   .radio {
     display: flex;
     gap: 10px;
@@ -38,17 +40,5 @@
       height: 40dvh;
     }
 
-    input[type="submit"] {
-      background-color: color.$button-color;
-      width: max-content;
-      color: white;
-      padding: 5px 20px;
-      border-radius: 15px;
-      border: none;
-      &:active {
-        background-color: rgb(77, 77, 104);
-        transform: scale(0.9);
-      }
-    }
   }
 }

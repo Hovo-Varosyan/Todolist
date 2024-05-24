@@ -12,7 +12,7 @@ import NotFound from "./pages/Notfound";
 import Cookies from "js-cookie";
 
 function App() {
-
+console.log(1)
   return (
     <>
       <Routes>
@@ -21,6 +21,7 @@ function App() {
           <Route path="/registr" element={<Registr />} />
         </Route>
         <Route element={<PrivateRoute />}>
+        <Route path="/" element={<AddTask />} />
           <Route path="/addtask" element={<AddTask />} />
           <Route path="/home/:page?" element={<Home />} />
           <Route path="/task/:id" element={<Task />} />

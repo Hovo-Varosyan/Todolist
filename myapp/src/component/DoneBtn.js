@@ -1,27 +1,41 @@
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { done } from "../store/Todostore";
 import server from "../api/api";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
+import { CircularProgress } from "@mui/material";
 
-function DoneBtn({ id, status, setMessage }) {
+function DoneBtn({ id, status, btnLoading, setBtnLoading, setMessage }) {
   const dispatch = useDispatch();
-
-  function handleDone() {
-    const doneStatus = status === true ? false : true;
+  const [loading, setLoading] = useState(false)
+  useEffect(() => {
+    if (btnLoading.includes(id)) {
+      setLoading(true)
+    } else {
+      setLoading(false)
+    }
+  }, [btnLoading])
+  async function handleDone() {
+    const doneStatus = !status;
+    setBtnLoading((prevState) => {
+      return [...prevState, id]
+    });
     server
       .post("/home", { id, status: doneStatus })
       .then((response) => {
         dispatch(done(id));
-        setMessage([{message:response.data.message, status:'success'}]);
+        setMessage([{ message: response.data.message, status: 'success' }]);
       })
-      .catch((response) =>  setMessage([{message:"ERROR", status:'warning'}])    );
+      .catch((response) => setMessage([{ message: "ERROR", status: 'warning' }]))
+      .finally(() => {
+        setBtnLoading((prevState) => prevState.filter((itemId) => itemId !== id));
+      });
   }
 
   return (
     <>
-      <button
+      {loading !== true ? <button
         className={status ? "table__green" : "table__red"}
         onClick={handleDone}
       >
@@ -30,7 +44,7 @@ function DoneBtn({ id, status, setMessage }) {
         ) : (
           <HighlightOffOutlinedIcon sx={{ color: "#ff2222" }} />
         )}
-      </button>
+      </button> : <CircularProgress size={16} />}
     </>
   );
 }

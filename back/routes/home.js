@@ -7,5 +7,5 @@ router.route("/")
     .post(Task.done)
     .patch(Task.edit);
 router.get("/:page?", Task.task);
-router.arguments(1)
+// router.arguments(1)
 module.exports = router;

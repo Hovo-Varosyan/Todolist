@@ -4,23 +4,40 @@ import AlertMessage from "../component/Alert";
 import server from "../api/api";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
+import { Button, CircularProgress } from "@mui/material";
+
+const formSchema = {
+  title: "",
+  description: "",
+};
+
 export default function AddTask() {
-  const [title, setTitle] = useState();
-  const [description, setDescription] = useState();
+  const [form, setForm] = useState(formSchema);
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    setForm((prevState) => {
+      return { ...prevState, [name]: value };
+    });
+  }
   const [status, setStatus] = useState(false);
   const [message, setMessage] = useState([]);
-
+  const [loading, setLoading] = useState(false);
+  
   function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
     server
-      .post("/task/add", { title, description, status })
+      .post("/task/add", { ...form, status })
       .then((response) => {
-        setMessage([{message:response.data.message, status:"success"}]);
+        setForm(formSchema);
+        setMessage([{ message: response.data.message, status: "success" }]);
         setStatus(false);
       })
       .catch((error) => {
-          setMessage([{message:"ERROR", status:'warning'}])    
-      });
+        setMessage([{ message: "ERROR", status: "warning" }]);
+      })
+      .finally(() => setLoading(false));
   }
 
   return (
@@ -31,23 +48,26 @@ export default function AddTask() {
           <label htmlFor="title">Enter Task Title</label>
           <input
             type="text"
-            onChange={(e) => setTitle(e.target.value)}
+            onChange={handleChange}
             name="title"
+            value={form.title}
             id="title"
             required
           />
           <label htmlFor="description">Enter Task description</label>
           <textarea
             id="description"
-            onChange={(e) => setDescription(e.target.value)}
+            value={form.description}
+            onChange={handleChange}
             name="description"
             required
           ></textarea>
-          <div className="radio">
+          <div className="form__radio">
+            <div className="radio">
             <input
               type="radio"
               onChange={() => setStatus(false)}
-              name="done"
+              name="status"
               id="notdone"
               checked={!status}
               required
@@ -62,7 +82,7 @@ export default function AddTask() {
             <input
               onChange={() => setStatus(true)}
               type="radio"
-              name="done"
+              name="status"
               id="done"
               checked={status}
               required
@@ -73,7 +93,14 @@ export default function AddTask() {
               </label>
             </div>
           </div>
-          <input type="submit" value="Add" />
+          </div>
+          
+          <Button variant="contained" type="submit" disabled={loading} sx={{width:'15%'}}>
+            {loading && (
+              <CircularProgress size={16} sx={{ marginRight: "10px" }} />
+            )}
+            ADD
+          </Button>
         </form>
       </section>
       {message.length > 0 ? (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "../assets/style/pageStyle/home.scss";
-import { Button } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import RemoveRedEyeSharpIcon from "@mui/icons-material/RemoveRedEyeSharp";
 import { useNavigate, useParams } from "react-router";
@@ -20,6 +20,7 @@ function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [message, setMessage] = useState([]);
+  const [btnLoading, setBtnLoading] = useState([]);
   const params = useParams();
 
   useEffect(() => {
@@ -29,9 +30,9 @@ function Home() {
       })
       .catch((response) => console.log(response));
   }, [params]);
-console.log(list.length, length)
+
   useEffect(() => {
-    if (list === 'empty'  && parseInt(params.page) > 1) {
+    if (list === "empty" && parseInt(params.page) > 1) {
       const url = parseInt(params.page) - 1;
       navigate("/home/" + url);
     }
@@ -61,13 +62,15 @@ console.log(list.length, length)
                   {list !== "empty" ? (
                     list.map((e, i) => {
                       return (
-                        <tr key={i}>
+                        <tr key={e._id}>
                           <td>{++i + parseInt(params.page - 1 || 0) * 50}</td>
                           <td> {e.title}</td>
                           <td>{e.description}</td>
                           <td>
                             <DoneBtn
                               id={e._id}
+                              btnLoading={btnLoading}
+                              setBtnLoading={setBtnLoading}
                               setMessage={setMessage}
                               status={e.status}
                             />
@@ -82,13 +85,20 @@ console.log(list.length, length)
                             </Button>
                           </td>
                           <td>
-                            <DeleteBtn id={e._id} setMessage={setMessage} />
+                            <DeleteBtn
+                              id={e._id}
+                              setMessage={setMessage}
+                              btnLoading={btnLoading}
+                              setBtnLoading={setBtnLoading}
+                            />
                           </td>
                           <td>
                             <Button
+                              disabled={btnLoading.includes(e._id)}
                               variant="outlined"
                               onClick={() => setShow(e._id)}
                             >
+                              {btnLoading.includes(e._id) && <CircularProgress size={16} sx={{ marginRight: "10px" }} />}
                               <EditIcon />
                               Edit
                             </Button>
@@ -108,7 +118,7 @@ console.log(list.length, length)
                   <Pagination
                     count={Math.ceil(parseInt(length) / 50)}
                     onChange={(e, value) => navigate(`/home/${value}`)}
-                    page={parseInt(params.page) || 1}
+                    page={parseInt(params.page || 1)}
                     size="large"
                     color="primary"
                   />
@@ -120,7 +130,15 @@ console.log(list.length, length)
           )}
         </div>
       </main>
-      {show && <TaskEdit id={show} setMessage={setMessage} setShow={setShow} />}
+      {show && (
+        <TaskEdit
+          id={show}
+          setMessage={setMessage}
+          btnLoading={btnLoading}
+          setBtnLoading={setBtnLoading}
+          setShow={setShow}
+        />
+      )}
       {message.length > 0 ? (
         <AlertMessage message={message} setMessage={setMessage} />
       ) : null}

@@ -27,7 +27,7 @@ const todoSlice = createSlice({
         console.log(id)
         return {
           list: data.length - 1 >= 0 ? data : "empty",
-          length: state.length>0?state.length - 1:state.length,
+          length: state.length > 0 ? state.length - 1 : 0,
         };
       } catch (err) {
         console.error(err);

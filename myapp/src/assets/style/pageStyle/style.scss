@@ -12,6 +12,18 @@ body {
     box-sizing: border-box;
     font-family: "Playfair Display", serif;
     font-style: normal;
+
+}
+
+button,
+input,
+div,
+span,
+img,
+video {
+    &:disabled {
+        cursor: not-allowed !important;
+    }
 }
 
 th,
@@ -79,6 +91,6 @@ label {
     cursor: pointer;
 }
 
-.warning{
+.warning {
     color: color.$waring;
 }

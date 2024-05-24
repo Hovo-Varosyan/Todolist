@@ -20,7 +20,8 @@ const schema = mongoose.Schema({
     id: String,
     title: String,
     description: String,
-    status: Boolean
+    status: Boolean,
+    date:String
   }],
   email: {
     type: String,
