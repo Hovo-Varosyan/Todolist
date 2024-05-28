@@ -2,7 +2,8 @@ import React, { memo, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteTodo } from "../store/Todostore";
 import server from "../api/api";
-import FormButton from "./FormButton";
+import { CircularProgress, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 function DeleteBtn({ id, setMessage, setBtnLoading, btnLoading }) {
   const dispatch = useDispatch();
@@ -37,15 +38,14 @@ function DeleteBtn({ id, setMessage, setBtnLoading, btnLoading }) {
   }
 
   return (
-    <>
-      <FormButton
-        icon={'delete'}
-        loading={loading}
-        func={handleDelaete}
-        text={"DELETE"}
-        onClick={handleDelaete}
-      />
-    </>
+    <IconButton
+      aria-label="delete"
+      onClick={handleDelaete}
+      className="icon_btn"
+      disabled={loading}
+    >
+      {loading ? <CircularProgress size={18} /> : <DeleteIcon />}
+    </IconButton>
   );
 }
 

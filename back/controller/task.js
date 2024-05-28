@@ -1,6 +1,7 @@
 const Joi = require("joi");
 const userModel = require("../models/usermodel");
 const schema = require("../validate/task");
+const time = require("../utils/time");
 class Task {
   static add = async (req, res, next) => {
     try {
@@ -17,7 +18,8 @@ class Task {
           $push: {
             list: {
               ...req.body,
-              date: `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()};${date.getDay()}-${date.getMonth()}-${date.getFullYear()}`,
+              time: `${time(date.getHours())}:${time(date.getMinutes())}:${time(date.getSeconds())}`,
+              date: `${time(date.getDay())}-${time(date.getMonth())}-${date.getFullYear()}`,
             },
           },
         },

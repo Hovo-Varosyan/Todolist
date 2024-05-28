@@ -5,7 +5,7 @@ const schema = mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    match:/^[a-zA-Z\s]+$/
+    match: /^[a-zA-Z\s]+$/
   },
   password: {
     type: String,
@@ -21,7 +21,8 @@ const schema = mongoose.Schema({
     title: String,
     description: String,
     status: Boolean,
-    date:String
+    date: String,
+    time: String
   }],
   email: {
     type: String,

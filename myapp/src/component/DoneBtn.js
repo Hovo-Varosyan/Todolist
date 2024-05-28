@@ -4,47 +4,52 @@ import { done } from "../store/Todostore";
 import server from "../api/api";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
-import { CircularProgress } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 
 function DoneBtn({ id, status, btnLoading, setBtnLoading, setMessage }) {
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     if (btnLoading.includes(id)) {
-      setLoading(true)
+      setLoading(true);
     } else {
-      setLoading(false)
+      setLoading(false);
     }
-  }, [btnLoading])
+  }, [btnLoading]);
   async function handleDone() {
     const doneStatus = !status;
     setBtnLoading((prevState) => {
-      return [...prevState, id]
+      return [...prevState, id];
     });
     server
       .post("/home", { id, status: doneStatus })
       .then((response) => {
         dispatch(done(id));
-        setMessage([{ message: response.data.message, status: 'success' }]);
+        setMessage([{ message: response.data.message, status: "success" }]);
       })
-      .catch((response) => setMessage([{ message: "ERROR", status: 'warning' }]))
+      .catch((response) =>
+        setMessage([{ message: "ERROR", status: "warning" }])
+      )
       .finally(() => {
-        setBtnLoading((prevState) => prevState.filter((itemId) => itemId !== id));
+        setBtnLoading((prevState) =>
+          prevState.filter((itemId) => itemId !== id)
+        );
       });
   }
 
   return (
     <>
-      {loading !== true ? <button
-        className={status ? "table__green" : "table__red"}
-        onClick={handleDone}
-      >
-        {status ? (
-          <CheckCircleOutlineIcon sx={{ color: "#24e424" }} />
-        ) : (
-          <HighlightOffOutlinedIcon sx={{ color: "#ff2222" }} />
-        )}
-      </button> : <CircularProgress size={16} />}
+      {loading !== true ? (
+        <Button sx={{ width: "10px" }} onClick={handleDone}>
+          {status ? (
+            <CheckCircleOutlineIcon sx={{ color: "#24e424" }} />
+          ) : (
+            <HighlightOffOutlinedIcon sx={{ color: "#ff2222" }} />
+          )}
+        </Button>
+      ) : (
+        <CircularProgress size={16} />
+      )}
     </>
   );
 }
