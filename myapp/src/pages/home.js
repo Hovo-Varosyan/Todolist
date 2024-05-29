@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "../assets/style/pageStyle/home.scss";
-import {  CircularProgress, IconButton } from "@mui/material";
+import { CircularProgress, IconButton, Skeleton } from "@mui/material";
 import RemoveRedEyeSharpIcon from "@mui/icons-material/RemoveRedEyeSharp";
 import { useNavigate, useParams } from "react-router";
 import TaskEdit from "../component/TaskEdit";
@@ -21,14 +21,17 @@ function Home() {
   const dispatch = useDispatch();
   const [message, setMessage] = useState([]);
   const [btnLoading, setBtnLoading] = useState([]);
+  const [loadingContent, setLoadingContent] = useState(false);
   const params = useParams();
 
   useEffect(() => {
+    setLoadingContent(false);
     server(`/home/${params?.page}` || "/home")
       .then((response) => {
         dispatch(getState(response.data));
       })
-      .catch((response) => console.log(response));
+      .catch((response) => console.log(response))
+      .finally(() => setLoadingContent(true)) 
   }, [params]);
 
   useEffect(() => {
@@ -43,62 +46,66 @@ function Home() {
       <main className="home__main">
         <div className="home__main__div">
           <h1>Task List</h1>
-          {list.length !== 0 && list !== "empty" ? (
+          {loadingContent ? (
             <>
-              {list.map((e, i) => {
-                let loading = btnLoading.includes(e._id);
-                return (
-                  <div className="todo">
-                    <div className="status">
-                      <DoneBtn
-                        id={e._id}
-                        btnLoading={btnLoading}
-                        setBtnLoading={setBtnLoading}
-                        setMessage={setMessage}
-                        status={e.status}
-                      />
-                    </div>
-                    <div className="text">
-                      <h5>{e.title}</h5>
-                      <p>{e.description}</p>
-                      <p>
-                        <span>{e.date}</span>-<span>{e.time}</span>
-                      </p>
-                    </div>
+              {list !== "empty" ? (
+                list.map((e, i) => {
+                  let loading = btnLoading.includes(e._id);
+                  return (
+                    <div key={e._id} className="todo">
+                      <div className="status">
+                        <DoneBtn
+                          id={e._id}
+                          btnLoading={btnLoading}
+                          setBtnLoading={setBtnLoading}
+                          setMessage={setMessage}
+                          status={e.status}
+                        />
+                      </div>
+                      <div className="text">
+                        <h5>{e.title}</h5>
+                        <p>{e.description}</p>
+                        <p>
+                          <span>{e.date}</span>-<span>{e.time}</span>
+                        </p>
+                      </div>
 
-                    <div className="button">
-                      <IconButton
-                        disabled={loading}
-                        className="icon_btn"
-                        onClick={() => navigate(`/task/${e._id}`)}
-                      >
-                        {loading ? (
-                          <CircularProgress size={18} />
-                        ) : (
-                          <RemoveRedEyeSharpIcon />
-                        )}
-                      </IconButton>
-                      <DeleteBtn
-                        id={e._id}
-                        setMessage={setMessage}
-                        btnLoading={btnLoading}
-                        setBtnLoading={setBtnLoading}
-                      />
-                      <IconButton
-                        disabled={loading}
-                        className="icon_btn"
-                        onClick={() => setShow(e._id)}
-                      >
-                        {loading ? (
-                          <CircularProgress size={18} />
-                        ) : (
-                          <EditIcon />
-                        )}
-                      </IconButton>
+                      <div className="button">
+                        <IconButton
+                          disabled={loading}
+                          className="icon_btn"
+                          onClick={() => navigate(`/task/${e._id}`)}
+                        >
+                          {loading ? (
+                            <CircularProgress size={18} />
+                          ) : (
+                            <RemoveRedEyeSharpIcon />
+                          )}
+                        </IconButton>
+                        <DeleteBtn
+                          id={e._id}
+                          setMessage={setMessage}
+                          btnLoading={btnLoading}
+                          setBtnLoading={setBtnLoading}
+                        />
+                        <IconButton
+                          disabled={loading}
+                          className="icon_btn"
+                          onClick={() => setShow(e._id)}
+                        >
+                          {loading ? (
+                            <CircularProgress size={18} />
+                          ) : (
+                            <EditIcon />
+                          )}
+                        </IconButton>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })
+              ) : (
+                <div className="todo">Empty</div>
+              )}
               {parseInt(length) > 0 && list.length > 0 && (
                 <Stack className="" spacing={2}>
                   <Pagination
@@ -111,11 +118,12 @@ function Home() {
                 </Stack>
               )}
             </>
-          ) : list === "empty" ? (
-            <div className="todo">Empty</div>
-          ) : (
-            <h3>Loading...</h3>
-          )}
+          ) : <>
+            <Skeleton variant="rounded" animation={'wave'} sx={{ marginBottom: '10px' }} height={120} />
+            <Skeleton variant="rounded" animation={'wave'} sx={{ marginBottom: '10px' }} height={120} />
+            <Skeleton variant="rounded" animation={'wave'} sx={{ marginBottom: '10px' }} height={120} />
+          </>
+          }
         </div>
       </main>
       {show && (

@@ -1,11 +1,14 @@
 @use "../stylecomponents//color.scss";
 @import "../stylecomponents//method.scss";
+
 .add {
   @extend %flex;
   width: 100dvw;
-.form__radio{
-  margin:10px 0 ;
-}
+
+  .form__radio {
+    margin: 10px 0;
+  }
+
   .radio {
     display: flex;
     gap: 10px;
@@ -39,6 +42,5 @@
     textarea {
       height: 40dvh;
     }
-
   }
 }
