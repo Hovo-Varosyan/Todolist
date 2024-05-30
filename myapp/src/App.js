@@ -12,7 +12,6 @@ import NotFound from "./pages/Notfound";
 import Cookies from "js-cookie";
 
 function App() {
-console.log(1)
   return (
     <>
       <Routes>

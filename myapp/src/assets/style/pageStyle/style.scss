@@ -12,7 +12,6 @@ body {
     box-sizing: border-box;
     font-family: "Playfair Display", serif;
     font-style: normal;
-
 }
 
 button,
@@ -99,7 +98,8 @@ label {
     color: rgb(142, 142, 142) !important;
     border: 1px solid rgb(218, 211, 211) !important;
     box-shadow: 0px 0px 10px rgb(218, 211, 211);
-    &:disabled, &:active {
+    &:disabled,
+    &:active {
         box-shadow: 0px 0px 5px 2px rgb(218, 211, 211) inset;
         color: rgb(176, 176, 176) !important;
     }

@@ -6,7 +6,6 @@ import Cookies from 'js-cookie'
 function PrivateRoute() {
 
   const cookie = Cookies.get("t_id")
-console.log(2)
   return Boolean(cookie) === true ? (
     <>
 

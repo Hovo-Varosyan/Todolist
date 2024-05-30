@@ -13,6 +13,7 @@ import Stack from "@mui/material/Stack";
 import DoneBtn from "../component/DoneBtn";
 import DeleteBtn from "../component/DeleteBtn";
 import EditIcon from "@mui/icons-material/Edit";
+import { useQuery } from "@tanstack/react-query";
 
 function Home() {
   const [show, setShow] = useState(false);
@@ -21,32 +22,42 @@ function Home() {
   const dispatch = useDispatch();
   const [message, setMessage] = useState([]);
   const [btnLoading, setBtnLoading] = useState([]);
-  const [loadingContent, setLoadingContent] = useState(false);
   const params = useParams();
+  const { page = 1 } = params;
+  if (isNaN(page)) {
+    navigate("/error");
+  }
+  const { data, isPending, isError, error, isSuccess } = useQuery({
+    queryKey: ["todo", params],
+    queryFn: () =>
+      server(`/home/${page}` || "/home")
+        .then((res) => {
+          return res.data;
+        }),
 
+  });
   useEffect(() => {
-    setLoadingContent(false);
-    server(`/home/${params?.page}` || "/home")
-      .then((response) => {
-        dispatch(getState(response.data));
-      })
-      .catch((response) => console.log(response))
-      .finally(() => setLoadingContent(true)) 
-  }, [params]);
-
-  useEffect(() => {
-    if (list === "empty" && parseInt(params.page) > 1) {
+    if (list === "empty" && page > 1) {
       const url = parseInt(params.page) - 1;
       navigate("/home/" + url);
     }
   }, [list]);
+  useEffect(() => {
+    if (isSuccess && data) {
+      data.list = data.list?.reverse()
+      dispatch(getState(data));
+    }
+  }, [data]);
 
+  if (isError) {
+    console.log(error);
+  }
   return (
     <>
       <main className="home__main">
         <div className="home__main__div">
           <h1>Task List</h1>
-          {loadingContent ? (
+          {!isPending ? (
             <>
               {list !== "empty" ? (
                 list.map((e, i) => {
@@ -118,12 +129,14 @@ function Home() {
                 </Stack>
               )}
             </>
-          ) : <>
-            <Skeleton variant="rounded" animation={'wave'} sx={{ marginBottom: '10px' }} height={120} />
-            <Skeleton variant="rounded" animation={'wave'} sx={{ marginBottom: '10px' }} height={120} />
-            <Skeleton variant="rounded" animation={'wave'} sx={{ marginBottom: '10px' }} height={120} />
-          </>
-          }
+          ) : (
+            <Skeleton
+              variant="rounded"
+              animation={"wave"}
+              sx={{ marginBottom: "10px" }}
+              height={120}
+            />
+          )}
         </div>
       </main>
       {show && (

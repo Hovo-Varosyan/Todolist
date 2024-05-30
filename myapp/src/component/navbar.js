@@ -7,6 +7,7 @@ import { useNavigate } from "react-router";
 import { memo, useEffect, useState } from "react";
 import server from "../api/api";
 import Cookies from "js-cookie";
+import { Link } from "react-router-dom";
 
 function GlobalNavbar() {
   const navigate = useNavigate();
@@ -26,10 +27,10 @@ useEffect(()=>{setCookie(Cookies.get('t_role'))},[])
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Nav.Link href="/home">Home</Nav.Link>
-            <Nav.Link href="/addtask">Add Task</Nav.Link>
+            <Link className="nav-link" to="/home">Home</Link>
+            <Link className="nav-link" to="/addtask">Add Task</Link>
             {cookie === 'admin' && (
-              <Nav.Link href="/userlist">User List</Nav.Link>
+              <Link to="/userlist">User List</Link>
             )}
             <button className="nav-link" onClick={() => logout()}>
               Log out

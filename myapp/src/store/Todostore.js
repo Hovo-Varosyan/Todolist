@@ -24,7 +24,6 @@ const todoSlice = createSlice({
       try {
         const { id } = action.payload;
         const data = state.list.filter((element) => element._id !== id);
-        console.log(id)
         return {
           list: data.length - 1 >= 0 ? data : "empty",
           length: state.length > 0 ? state.length - 1 : 0,
@@ -35,7 +34,6 @@ const todoSlice = createSlice({
     },
     todoEdit(state, action) {
       try {
-        console.log(action.payload)
         const { _id, title, description, status } = action.payload;
         const newList = state.list.map((todo) => {
           if (todo._id === _id) {
