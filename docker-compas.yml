@@ -1,0 +1,13 @@
+version: "3"
+services:
+frontend:
+  build:
+    context: ./frontend # Путь к директории с Dockerfile для фронтенда
+  ports:
+    - "3000:3000"
+
+backend:
+  build:
+    context: ./backend # Путь к директории с Dockerfile для бэкенда
+  ports:
+    - "8000:8000"

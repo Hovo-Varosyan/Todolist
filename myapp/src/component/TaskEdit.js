@@ -5,6 +5,8 @@ import { useDispatch } from "react-redux";
 import { todoEdit } from "../store/Todostore";
 import server from "../api/api";
 import FormButton from "./FormButton";
+import { useQuery } from "@tanstack/react-query";
+import { CircularProgress } from "@mui/material";
 
 export default function TaskEdit({
   id,
@@ -13,10 +15,12 @@ export default function TaskEdit({
   setShow,
   setMessage,
 }) {
-  const dispatch = useDispatch();
   const [data, setData] = useState(false);
+
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = useState(false);
-  
+
   useEffect(() => {
     if (btnLoading.includes(id)) {
       setLoading(true);
@@ -51,18 +55,32 @@ export default function TaskEdit({
       });
   }
 
-  useEffect(() => {
-    server
+  const { data: todoData, isSuccess, isError, isPending } = useQuery({
+    queryKey: ['editTodo', id],
+    queryFn: () => server
       .get(`/task/${id}`)
-      .then((res) => setData(res.data.data))
-      .catch((err) => console.log(err));
-  }, []);
+      .then(res => { return res.data })
+  }
+  )
+  useEffect(() => {
+    if (isSuccess) {
+      setData(todoData);
+    }
+  }, [isSuccess]);
 
+
+  if (isError) {
+    return <div className="main__div" onClick={handleClose}>
+      <div>
+        500 Server Error
+      </div>
+    </div>
+  }
   function handleClose() {
     setData(false);
     setShow(false);
   }
-
+  console.log(data)
   return (
     <div className="main__div" onClick={handleClose}>
       <div onClick={(e) => e.stopPropagation()}>
@@ -72,8 +90,8 @@ export default function TaskEdit({
         </div>
 
         <section className="edit">
-          {data ? (
-            <form onSubmit={handleEdit}>
+          {isPending ? <CircularProgress /> : (
+            data && <form onSubmit={handleEdit}>
               <label htmlFor="title">Enter Task Title</label>
               <input
                 type="text"
@@ -127,9 +145,8 @@ export default function TaskEdit({
                 text={"EDIT"}
               />
             </form>
-          ) : (
-            "Loading..."
-          )}
+          )
+          }
         </section>
       </div>
     </div>

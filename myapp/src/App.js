@@ -14,13 +14,13 @@ import Cookies from "js-cookie";
 function App() {
   return (
     <>
-      <Routes>
+      <Routes errorElement={<NotFound />}>
         <Route element={< LoginRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/registr" element={<Registr />} />
         </Route>
-        <Route element={<PrivateRoute />}>
-        <Route path="/" element={<AddTask />} />
+        <Route element={<PrivateRoute />} >
+          <Route path="/" element={<AddTask />} />
           <Route path="/addtask" element={<AddTask />} />
           <Route path="/home/:page?" element={<Home />} />
           <Route path="/task/:id" element={<Task />} />

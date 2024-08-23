@@ -162,8 +162,9 @@ class Task {
         { _id: userId, "list._id": listId },
         { "list.$": 1 }
       );
+      console.log(data)
       if (data) {
-        return res.json({ data: data.list[0] });
+        return res.json( data.list[0] );
       } else {
         return res.status(404).json({ message: "not data" });
       }
